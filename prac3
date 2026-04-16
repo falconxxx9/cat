@@ -1,0 +1,64 @@
+import hashlib
+import time
+
+
+class Block:
+    def __init__(self, block_id, prev_hash, sender, receiver, amount):
+        self.block_id = block_id
+        self.timestamp = time.time()
+        self.nonce = 0
+        self.prev_hash = prev_hash
+
+        # Single transaction
+        self.transaction = {
+            'sender': sender,
+            'receiver': receiver,
+            'amount': amount
+        }
+
+        self.merkle_root = self.calculate_merkle_root()
+        self.hash = self.calculate_hash()
+
+    def calculate_merkle_root(self):
+        transaction_str = (
+            str(self.transaction['sender']) +
+            str(self.transaction['receiver']) +
+            str(self.transaction['amount'])
+        )
+        return hashlib.sha256(transaction_str.encode()).hexdigest()
+
+    def calculate_hash(self):
+        block_str = (
+            str(self.block_id) +
+            str(self.timestamp) +
+            str(self.nonce) +
+            str(self.prev_hash) +
+            str(self.merkle_root)
+        )
+        return hashlib.sha256(block_str.encode()).hexdigest()
+
+    def display_block_details(self):
+        print("\n---------------------------")
+        print("Block ID:", self.block_id)
+        print("Timestamp:", self.timestamp)
+        print("Nonce:", self.nonce)
+        print("Previous Hash:", self.prev_hash)
+        print("Transaction:")
+        print("\tSender:", self.transaction['sender'])
+        print("\tReceiver:", self.transaction['receiver'])
+        print("\tAmount:", self.transaction['amount'])
+        print("Merkle Root:", self.merkle_root)
+        print("Hash:", self.hash)
+
+
+# ---------------- Example Usage ----------------
+if __name__ == "__main__":
+    block_id = 1
+    prev_hash = "0"
+    sender = "Abuzar"
+    receiver = "Shahid"
+    amount = 100000.0
+
+    block = Block(block_id, prev_hash, sender, receiver, amount)
+    block.display_block_details()
+
