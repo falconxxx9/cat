@@ -1,0 +1,26 @@
+import hashlib
+import datetime
+
+class Client:
+    def __init__(self, name, data):
+        self.name = name
+        self.data = data
+        self.timestamp = datetime.datetime.now()
+        self.hash = self.generate_hash()
+
+    def generate_hash(self):
+        sha = hashlib.sha256()
+        hash_string = str(self.name) + str(self.data) + str(self.timestamp)
+        sha.update(hash_string.encode('utf-8'))
+        return sha.hexdigest()
+
+    def display(self):
+        print("Client Name:", self.name)
+        print("Data:", self.data)
+        print("Timestamp:", self.timestamp)
+        print("Generated Hash:", self.hash)
+
+
+# Example
+client1 = Client("Abuzar", "Transaction of 100 coins")
+client1.display()
