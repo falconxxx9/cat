@@ -1,0 +1,30 @@
+import hashlib
+import datetime
+
+class Block:
+   def __init__(self, index, data, previous_hash):
+       self.index = index
+       self.timestamp = datetime.datetime.now()
+       self.data = data
+       self.previous_hash = previous_hash
+       self.hash = self.generate_hash()
+
+   def generate_hash(self):
+       sha = hashlib.sha256()
+       hash_string = str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash)
+       sha.update(hash_string.encode('utf-8'))
+       return sha.hexdigest()
+
+   def display_block(self):
+       print("Block Index:", self.index)
+       print("Timestamp:", self.timestamp)
+       print("Data:", self.data)
+       print("Previous Hash:", self.previous_hash)
+       print("Current Hash:", self.hash)
+
+
+# Creating Genesis Block (First Block)
+genesis_block = Block(1, "First Block Data", "0")
+
+# Display Block Details
+genesis_block.display_block()
