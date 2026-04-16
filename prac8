@@ -1,0 +1,89 @@
+// Inheritance
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+contract Parent {
+constructor() payable {}
+
+    string public message = "Hello from Parent";
+
+}
+
+contract Child is Parent {
+constructor() payable {}
+
+    function getMessage() public view returns(string memory){
+        return message;
+    }
+}
+
+
+//2️⃣ Constructor
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ConstructorDemo {
+
+    string public name;
+
+    constructor(string memory _name) payable{
+        name = _name;
+    }
+}
+
+
+//3️⃣ Abstract Contract
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+abstract contract Shape {
+
+    function area() public virtual returns(uint);
+}
+
+contract Square is Shape {
+
+    function area() public pure override returns(uint){
+        uint side = 5;
+        return side * side;
+    }
+}
+
+
+
+//5️⃣ Library
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+
+contract TestLibrary {
+constructor() payable {}
+
+    function getSum(uint x, uint y) public pure returns(uint){
+        return MathLibrary.add(x,y);
+    }
+}
+
+
+
+library MathLibrary {
+
+    function add(uint a, uint b) internal pure returns(uint){
+        return a + b;
+    }
+}
+
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ErrorHandling {
+
+    constructor() payable {}
+
+    function checkValue(uint num) public pure returns (string memory) {
+        require(num > 10, "Value must be greater than 10");
+        return "Valid number";
+    }
+}
+
