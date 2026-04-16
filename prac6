@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+contract ArrayOperations {
+constructor() payable {}
+    uint[] public arr;
+
+    // Add element to array
+    function addElement(uint _value) public returns (uint[] memory) {
+        arr.push(_value);
+        return arr;
+    }
+
+    // Get full array
+    function getArray() public view returns (uint[] memory) {
+        return arr;
+    }
+
+    // Get element by index
+    function getElement(uint _index) public view returns (uint) {
+        require(_index < arr.length, "Index out of bounds");
+        return arr[_index];
+    }
+
+    // Update element
+    function updateElement(uint _index, uint _value) public returns (uint[] memory) {
+        require(_index < arr.length, "Index out of bounds");
+        arr[_index] = _value;
+        return arr;
+    }
+
+    // Delete element (resets to 0)
+    function deleteElement(uint _index) public returns (uint[] memory) {
+        require(_index < arr.length, "Index out of bounds");
+        delete arr[_index];
+        return arr;
+    }
+
+    // Get array length
+    function getLength() public view returns (uint) {
+        return arr.length;
+    }
+
+    // Remove last element
+    function popElement() public returns (uint[] memory) {
+        require(arr.length > 0, "Array is empty");
+        arr.pop();
+        return arr;
+    }
+}
+
