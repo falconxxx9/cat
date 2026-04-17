@@ -1,3 +1,7 @@
+//Perform text preprocessing in NLP including 
+//tokenization, stop words removal, lemmatization, 
+//stemming, and POS tagging. 
+
 import nltk
 import string
 from nltk.tokenize import word_tokenize
