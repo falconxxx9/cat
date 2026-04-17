@@ -1,0 +1,55 @@
+//Information extraction using chunking, chinking, named entity recognition and Word Cloud.
+
+
+#pip install nltk wordcloud matplotlib
+
+import nltk
+from nltk import word_tokenize, pos_tag, RegexpParser, ne_chunk
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+# Download required nltk resources
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+
+# Climate Change:
+# text = "Rising sea levels and extreme weather events highlight the urgent need to address climate change."
+
+# Future Technology:
+text = "Artificial intelligence and quantum computing are shaping the future of technology."
+
+# Tokenization & POS Tagging
+tokens = word_tokenize(text)
+tags = pos_tag(tokens)
+
+# 1. Chunking (Noun Phrases)
+chunk_grammar = "NP: {<DT>?<JJ>*<NN.*>+}"
+chunk_parser = RegexpParser(chunk_grammar)
+chunk_tree = chunk_parser.parse(tags)
+print("\n--- Chunking ---")
+print(chunk_tree)
+
+# 2. Chinking (Remove Verbs)
+chink_grammar = """
+  NP: {<.*>+}
+      }<VB.*>+{
+"""
+chink_parser = RegexpParser(chink_grammar)
+chink_tree = chink_parser.parse(tags)
+print("\n--- Chinking ---")
+print(chink_tree)
+
+# 3. Named Entity Recognition
+ner_tree = ne_chunk(tags)
+print("\n--- Named Entity Recognition ---")
+print(ner_tree)
+
+# 4. Word Cloud
+wc = WordCloud(width=600, height=400, background_color="white").generate(text)
+plt.imshow(wc)
+plt.axis("off")
+plt.title("Word Cloud")
+plt.show()
+
