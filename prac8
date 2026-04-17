@@ -53,27 +53,19 @@ contract Square is Shape {
 //5️⃣ Library
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
-
+ library MathLibrary{
+    function add(uint a,uint b) public pure returns(uint){
+        return a + b;
+ }
+ }
 contract TestLibrary {
 constructor() payable {}
-
     function getSum(uint x, uint y) public pure returns(uint){
         return MathLibrary.add(x,y);
     }
 }
 
-
-
-library MathLibrary {
-
-    function add(uint a, uint b) internal pure returns(uint){
-        return a + b;
-    }
-}
-
-
-
+//6 Errorhandling
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
