@@ -1,0 +1,50 @@
+//Text classification and similarity using word embedding. 
+
+    import numpy as np
+    from gensim.models import Word2Vec
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics.pairwise import cosine_similarity
+
+     # Training Data
+texts = [
+        "I love machine learning",
+        "AI is amazing",
+        "I hate spam emails",
+        "Spam messages are annoying"
+        ]
+labels = [1, 1, 0, 0]   # 1 = tech/positive, 0 = spam/negative
+
+# Tokenize
+sentences = [text.lower().split() for text in texts]
+
+# Train Word2Vec Model
+model = Word2Vec(sentences, vector_size=50, window=2, min_count=1, workers=1)
+
+    # Function: sentence → average word vector
+def get_vector(sentence):
+    words = sentence.lower().split()
+    vectors = [model.wv[word] for word in words if word in model.wv]
+    return np.mean(vectors, axis=0)
+
+
+# Convert texts to vectors
+X = np.array([get_vector(text) for text in texts])
+
+    # Text Classification
+clf = LogisticRegression()
+clf.fit(X, labels)
+
+test_text = "AI and machine learning"
+test_vec = get_vector(test_text).reshape(1, -1)
+
+prediction = clf.predict(test_vec)
+print("Classification Result:", prediction)
+
+text1 = "machine learning is powerful"
+text2 = "AI is powerful"
+
+vec1 = get_vector(text1).reshape(1, -1)
+vec2 = get_vector(text2).reshape(1, -1)
+
+similarity = cosine_similarity(vec1, vec2)
+print("Similarity Score:", similarity[0][0])
