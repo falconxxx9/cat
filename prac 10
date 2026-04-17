@@ -1,0 +1,82 @@
+//  Develop interactive application using Text to Speech and Speech to Text conversion. 
+
+import speech_recognition as sr
+import pyttsx3
+from datetime import datetime
+import os
+
+# Initialize TTS engine
+engine = pyttsx3.init()
+
+# Set voice (Windows SAPI5)
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[0].id)
+engine.setProperty('rate', 170)
+engine.setProperty('volume', 1.0)
+
+def speak(text):
+    print("Assistant:", text)
+    engine.say(text)
+    engine.runAndWait()
+
+def listen():
+    recognizer = sr.Recognizer()
+    
+    with sr.Microphone() as source:
+        print("Listening...")
+        recognizer.adjust_for_ambient_noise(source, duration=1)
+        audio = recognizer.listen(source)
+
+    try:
+        print("Recognizing...")
+        text = recognizer.recognize_google(audio)
+        print("You said:", text)
+        return text.lower()
+
+    except sr.UnknownValueError:
+        speak("Sorry, I did not understand.")
+        return None
+
+    except sr.RequestError:
+        speak("Internet connection error.")
+        return None
+
+
+def main():
+    speak("Hello! I am your Bot. Say something.")
+
+    while True:
+        command = listen()
+
+        if command is None:
+            continue
+
+        if "exit" in command or "quit" in command:
+            speak("Goodbye! Have a nice day.")
+            break
+
+        elif "hello" in command:
+            speak("Hello! How can I help you?")
+
+        elif "time" in command:
+            current_time = datetime.now().strftime("%I:%M %p")
+            speak(f"The time is {current_time}")
+
+        elif "open notepad" in command:
+            speak("Opening Notepad")
+            os.system("notepad")
+
+        elif "open calculator" in command:
+            speak("Opening Calculator")
+            os.system("calc")
+
+        elif "open word" in command:
+            speak("Opening Microsoft Word")
+            os.system("start winword")
+
+        else:
+            speak(f"You said {command}")
+
+
+if __name__ == "__main__":
+    main()
