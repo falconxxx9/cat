@@ -1,0 +1,70 @@
+//Working with text corpora including accessing datasets, loading a custom corpus, and basic text 
+//processing. 
+
+
+import nltk
+from collections import Counter
+from nltk.corpus import gutenberg
+from nltk.corpus import PlaintextCorpusReader
+from nltk.tokenize import word_tokenize, RegexpTokenizer
+
+nltk.download('punkt')
+nltk.download('gutenberg')
+
+print("ACCESSING TEXT CORPORA")
+
+print("Available Gutenberg files:")
+print(gutenberg.fileids())
+
+
+# Load one corpus file
+words = gutenberg.words('austen-emma.txt')
+sents = gutenberg.sents('austen-emma.txt')
+
+print("\nTotal words:", len(words))
+print("First 20 words:", words[:20])
+print("First sentence:", sents[0])
+
+
+print("LOADING CUSTOM CORPUS")
+print("==============================")
+
+try:
+    corpus_root = "my_corpus"
+    mycorpus = PlaintextCorpusReader(corpus_root, '.*')
+
+    print("Custom corpus files:", mycorpus.fileids())
+    print("Sample words:", mycorpus.words()[:20])
+except:
+    print("Create folder 'my_corpus' with text files.")
+
+
+print("TEXT PROCESSING")
+
+sample_text = "NLP is FUN! Version 2.0 — Let's Learn."
+print("==============================")
+
+print("Original:", sample_text)
+print("==============================")
+
+# Lowercase
+print("Lowercase:", sample_text.lower())
+print("==============================")
+
+# Character list
+chars = list(sample_text)
+print("Characters:", chars[:20])
+print("==============================")
+
+# Remove non-letters
+letters_only = ''.join(c for c in sample_text if c.isalpha() or c.isspace())
+print("Letters only:", letters_only)
+print("==============================")
+
+# Character frequency
+print("Character frequency:", Counter(sample_text))
+print("==============================")
+
+# Encoding
+print("UTF-8 bytes:", sample_text.encode("utf-8"))
+
