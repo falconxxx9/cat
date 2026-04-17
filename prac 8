@@ -1,0 +1,112 @@
+//Building a Chabot: Rule-based and AI-based models. 
+
+import re
+import random
+import nltk
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+
+nltk.download('punkt')
+
+# RULE-BASED
+RULES = {
+    r'hi|hello|hey': "Hello! How can I help you?",
+    r'what is your name': "I am a Chatbot.",
+    r'help': "You can ask about hours, services, or support.",
+    r'hours|timing': "We are open from 9 AM to 6 PM.",
+    r'contact': "You can email support@example.com",
+}
+
+def rule_based_response(text):
+    for pattern, response in RULES.items():
+        if re.search(pattern, text.lower()):
+            return response
+    return None
+
+
+# AI MODEL
+training_sentences = [
+    "bye",
+    "goodbye",
+    "see you later",
+    "thank you",
+    "thanks",
+    "i appreciate it",
+    "i need support",
+    "i have a problem",
+    "something is wrong",
+    "can you help me",
+    "what services do you offer",
+    "tell me your services"
+]
+
+training_labels = [
+    "goodbye",
+    "goodbye",
+    "goodbye",
+    "thanks",
+    "thanks",
+    "thanks",
+    "support",
+    "support",
+    "support",
+    "support",
+    "services",
+    "services"
+]
+
+RESPONSES = {
+    "goodbye": [
+        "Goodbye!",
+        "See you soon!",
+        "Have a great day!"
+    ],
+    "thanks": [
+        "You're welcome!",
+        "Happy to help!",
+        "Anytime!"
+    ],
+    "support": [
+        "Please describe your issue.",
+        "Support team will help you.",
+        "Tell me the problem in detail."
+    ],
+    "services": [
+        "We provide transport and logistics solutions.",
+        "Our services include transport and logistics."
+    ]
+}
+
+# Train vectorizer + model
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(training_sentences)
+
+model = LogisticRegression()
+model.fit(X, training_labels)
+
+
+def ai_response(text):
+    vec = vectorizer.transform([text])
+    intent = model.predict(vec)[0]
+    return random.choice(RESPONSES[intent])
+
+
+def chatbot(user_input):
+    # Step 1 — Rule-based
+    rule_reply = rule_based_response(user_input)
+    if rule_reply:
+        return rule_reply
+
+    # Step 2 — Fallback to AI model
+    return ai_response(user_input)
+
+print("Chatbot running. Type 'quit' to exit.")
+
+while True:
+    msg = input("You: ")
+    if msg.lower() == "quit":
+        print("Bot: Goodbye!")
+        break
+
+    reply = chatbot(msg)
+    print("Bot:", reply)
