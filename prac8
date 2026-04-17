@@ -79,3 +79,17 @@ contract ErrorHandling {
     }
 }
 
+
+INTERFACE
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+interface Calculator{
+    function add(uint a,uint b) external returns(uint);
+    
+}
+contract TestCalc is Calculator{
+    constructor() payable{}
+    function add(uint a,uint b) external pure  override returns(uint){
+        return a+b;
+    }
+}
