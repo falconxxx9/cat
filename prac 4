@@ -1,0 +1,62 @@
+//Language modeling using N-grams for next-word prediction.
+
+
+import nltk
+from nltk import ngrams
+from collections import defaultdict
+import random
+
+text = """
+Dr. APJ Abdul Kalam (1931–2015) was a renowned Indian scientist and
+the 11th President of India (2002–2007), often referred to as the 
+"Missile Man of India" for his vital role in developing India's missile and space programs. 
+A devoted teacher and author, he inspired millions with his vision for a developed nation. 
+"""
+import nltk
+
+# Tokenize the text into words
+words = nltk.word_tokenize(text)
+
+# Preprocess the words (convert to lowercase, remove punctuation)
+words = [word.lower() for word in words if word.isalnum()]
+
+# Define the order of the N-gram model (N=2 for bigrams)
+N = 2
+
+# Create N-grams from the tokenized words
+ngrams_list = list(ngrams(words, N))
+
+# Create a defaultdict to store N-grams and their frequency
+ngram_freq = defaultdict(int)
+for ngram in ngrams_list:
+    ngram_freq[ngram] += 1
+
+
+def predict_next_word(prefix):
+    # Filter N-grams that start with the given prefix
+    matching_ngrams = [(ngram, freq) for ngram, freq in ngram_freq.items() if ngram[:-1] == prefix]
+    if not matching_ngrams:
+        return "No prediction available."
+
+    # Sort N-grams by frequency in descending order
+    #sorted_ngrams = sorted(matching_ngrams, key=lambda x: x[1], reverse=True)
+    
+    # Select the N-gram with the highest frequency as the prediction
+    #prediction = sorted_ngrams[0][0][-1]
+    
+    #return prediction
+
+    # Selects randomly among the most frequent candidates
+    max_freq = max(freq for _, freq in matching_ngrams)
+    candidates = [ngram[-1] for ngram, freq in matching_ngrams if freq == max_freq]
+    return random.choice(candidates)
+
+user_input = input(f"Enter {N-1} word(s) as prefix for next-word prediction: ").lower().split()
+
+if len(user_input) != N - 1:
+    print(f"Please enter exactly {N-1} word(s) as prefix.")
+else:
+    prefix = tuple(user_input)
+    prediction = predict_next_word(prefix)
+    print(f"Prediction: {prediction}")
+    
