@@ -1,0 +1,96 @@
+//Semantic analysis covering WordNet, synonyms, antonyms, and word sense disambiguation 
+
+import nltk
+
+# DOWNLOAD REQUIRED NLTK DATA
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+from nltk.corpus import wordnet as wn
+from nltk.wsd import lesk
+from nltk.tokenize import word_tokenize
+
+
+# SYNONYMS & ANTONYMS
+def get_synonyms_antonyms(word):
+    synonyms = set()
+    antonyms = set()
+
+    for syn in wn.synsets(word):
+        for lemma in syn.lemmas():
+            synonyms.add(lemma.name())
+
+            if lemma.antonyms():
+                antonyms.add(lemma.antonyms()[0].name())
+
+    return synonyms, antonyms
+
+
+# WORDNET DETAILS
+def wordnet_details(word):
+    synsets = wn.synsets(word)
+
+    print(f"\nWordNet senses for '{word}':\n")
+
+    for i, syn in enumerate(synsets, 1):
+        print(f"Sense {i}")
+        print("Name:", syn.name())
+        print("Definition:", syn.definition())
+        print("Examples:", syn.examples())
+        print("Hypernyms:", [h.name() for h in syn.hypernyms()])
+        print("Hyponyms:", [h.name() for h in syn.hyponyms()])
+        print("-" * 40)
+
+
+
+# WORD SENSE DISAMBIGUATION
+def disambiguate_word(sentence, target_word, pos=None):
+    tokens = word_tokenize(sentence)
+    sense = lesk(tokens, target_word, pos=pos)
+
+    if sense:
+        print("\nWSD Result")
+        print("Sentence:", sentence)
+        print("Target Word:", target_word)
+        print("Chosen Sense:", sense.name())
+        print("POS:", sense.pos())
+        print("Definition:", sense.definition())
+        print("Examples:", sense.examples())
+    else:
+        print("No sense found.")
+
+
+if __name__ == "__main__":
+
+    word = "bank"
+
+    print("\n=== SYNONYMS & ANTONYMS ===")
+    syns, ants = get_synonyms_antonyms(word)
+    print("Synonyms:", list(syns)[:10])
+    print("Antonyms:", list(ants))
+
+    print("\n=== WORDNET SEMANTIC DETAILS ===")
+    wordnet_details(word)
+
+    print("\n=== WORD SENSE DISAMBIGUATION ===")
+
+
+
+    #s1 = "He deposited money in the bank"
+    #s2 = "The boat reached the river bank"
+    
+    s1 = "He deposited his savings and money in the bank account for financial security"
+    s2 = "We walked along the slope beside the body of water and rested on the bank"
+
+    disambiguate_word(s1, "bank", pos='n')
+    disambiguate_word(s2, "bank", pos='n')
+
+
+
+
+
+
+
