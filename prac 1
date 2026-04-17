@@ -1,0 +1,95 @@
+import nltk
+import string
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import WordNetLemmatizer, PorterStemmer
+from nltk import pos_tag
+
+# Download required datasets
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+
+
+text = "Natural Language Processing with Python is amazing. NLTK makes it easy!"
+print("Original Text:")
+print(text)
+print()
+
+
+
+# Tokenization
+tokens = word_tokenize(text)
+print("1) Tokens:")
+print(tokens)
+print()
+
+
+text = "Natural Language Processing with Python is amazing. NLTK makes it easy!"
+print("Original Text:")
+print(text)
+print()
+
+
+
+# Tokenization
+tokens = word_tokenize(text)
+print("1) Tokens:")
+print(tokens)
+print()
+
+
+# Stopword + punctuation removal
+stop_words = set(stopwords.words("english"))
+filtered_tokens = [
+    w for w in tokens
+    if w.lower() not in stop_words and w not in string.punctuation
+]
+
+print("2) After Stopword Removal:")
+print(filtered_tokens)
+print()
+
+
+# POS Tagging
+pos_tags = pos_tag(tokens)
+print("3) POS Tags:")
+print(pos_tags)
+print()
+
+
+# Helper for Lemmatization POS mapping
+def get_wordnet_pos(tag):
+    if tag.startswith('J'):
+        return wordnet.ADJ
+    elif tag.startswith('V'):
+        return wordnet.VERB
+    elif tag.startswith('N'):
+        return wordnet.NOUN
+    elif tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN
+
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized = [
+    lemmatizer.lemmatize(word, get_wordnet_pos(tag))
+    for word, tag in pos_tags
+]
+
+print("4) Lemmatization:")
+print(lemmatized)
+print()
+
+
+
+# Stemming
+stemmer = PorterStemmer()
+stemmed = [stemmer.stem(word) for word in filtered_tokens]
+
+print("5) Stemming:")
+print(stemmed)
+print()
