@@ -1,0 +1,168 @@
+---
+
+# ✅ PRACTICAL 6: APACHE SPARK (SCALA – RDD OPERATIONS)
+
+### Technology: Apache Spark (Scala)
+
+## 🎯 Objective
+
+Perform data processing using Spark RDD operations like map, filter, reduce, and word count.
+
+---
+
+## ⚙️ Steps to Perform
+
+1. Open Command Prompt
+
+---
+
+2. Start Spark Shell
+
+```bash id="sp1"
+spark-shell
+```
+
+---
+
+## 🧾 Execution Commands
+
+### 1. Load Text File
+
+```scala id="sp2"
+val data = sc.textFile("sparkdata.txt")
+data.collect()
+```
+
+---
+
+### 2. Word Count Program
+
+```scala id="sp3"
+val result = data.flatMap(line => line.split(" "))
+  .map(word => (word,1))
+  .reduceByKey(_ + _)
+
+result.collect()
+```
+
+---
+
+### 3. Map Function
+
+```scala id="sp4"
+val data1 = sc.parallelize(List(10,20,30))
+val mapfunc = data1.map(x => x + 10)
+mapfunc.collect()
+```
+
+---
+
+### 4. Filter Function
+
+```scala id="sp5"
+val data2 = sc.parallelize(List(10,20,35,40))
+val filterfunc = data2.filter(x => x != 35)
+filterfunc.collect()
+```
+
+---
+
+### 5. Count Function
+
+```scala id="sp6"
+val data3 = sc.parallelize(List(1,2,3,4,5))
+val countfunc = data3.count()
+```
+
+---
+
+### 6. Distinct Function
+
+```scala id="sp7"
+val data4 = sc.parallelize(List(10,20,20,40))
+val distinctfunc = data4.distinct()
+distinctfunc.collect()
+```
+
+---
+
+### 7. Union Function
+
+```scala id="sp8"
+val dataA = sc.parallelize(List(1,2,3))
+val dataB = sc.parallelize(List(3,4,5))
+val unionfunc = dataA.union(dataB)
+unionfunc.collect()
+```
+
+---
+
+### 8. Intersection Function
+
+```scala id="sp9"
+val intersectfunc = dataA.intersection(dataB)
+intersectfunc.collect()
+```
+
+---
+
+### 9. Cartesian Function
+
+```scala id="sp10"
+val cartesianfunc = dataA.cartesian(dataB)
+cartesianfunc.collect()
+```
+
+---
+
+### 10. Sort By Key
+
+```scala id="sp11"
+val pairData = sc.parallelize(Seq(("C",3),("A",1),("B",2)))
+val sortfunc = pairData.sortByKey()
+sortfunc.collect()
+```
+
+---
+
+### 11. Group By Key
+
+```scala id="sp12"
+val data5 = sc.parallelize(Seq(("A",1),("A",2),("B",3)))
+val groupfunc = data5.groupByKey()
+groupfunc.collect()
+```
+
+---
+
+### 12. Reduce By Key
+
+```scala id="sp13"
+val reducefunc = data5.reduceByKey(_ + _)
+reducefunc.collect()
+```
+
+---
+
+## ✅ Sample Input (sparkdata.txt)
+
+```text id="spin"
+hello spark hello world
+big data spark
+```
+
+---
+
+## ✅ Expected Output Example
+
+```text id="spout"
+(hello,2)
+(spark,2)
+(world,1)
+(big,1)
+(data,1)
+```
+
+---
+
+Say **"next"** and I’ll give you **PRACTICAL 7 (PySpark)** in the same format 🚀
