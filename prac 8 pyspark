@@ -1,0 +1,131 @@
+---
+
+# ✅ PRACTICAL 7: PYSPARK (DATAFRAME OPERATIONS)
+
+### Technology: PySpark
+
+## 🎯 Objective
+
+Perform data processing using PySpark DataFrame operations like read, filter, aggregation, and word count.
+
+---
+
+## ⚙️ Steps to Perform
+
+1. Open Command Prompt
+
+---
+
+2. Start PySpark Shell
+
+```bash id="py1"
+pyspark
+```
+
+---
+
+3. (Optional) Create sample file
+
+```bash id="py2"
+notepad README.md
+```
+
+👉 Add content:
+
+```text id="pyin"
+hello spark
+big data spark
+spark is fast
+```
+
+---
+
+## 🧾 Execution Commands
+
+### 1. Read File
+
+```python id="py3"
+input = spark.read.text("README.md")
+input.show()
+```
+
+---
+
+### 2. Show First Row
+
+```python id="py4"
+input.first()
+```
+
+---
+
+### 3. Filter Lines Containing “Spark”
+
+```python id="py5"
+input.filter(input.value.contains("spark")).show()
+```
+
+---
+
+### 4. Count Lines Containing “Spark”
+
+```python id="py6"
+input.filter(input.value.contains("spark")).count()
+```
+
+---
+
+### 5. Count Words Per Line
+
+```python id="py7"
+from pyspark.sql.functions import *
+
+input.select(size(split(input.value,"\\s+")).alias("numWords")).show()
+```
+
+---
+
+### 6. Maximum Words in a Line
+
+```python id="py8"
+input.select(size(split(input.value,"\\s+")).alias("numWords")) \
+     .agg(max(col("numWords"))) \
+     .collect()
+```
+
+---
+
+### 7. Word Count Program
+
+```python id="py9"
+from pyspark.sql.functions import *
+
+wordCount = input.select(
+    explode(split(input.value,"\\s+")).alias("word")
+).groupBy("word").count()
+
+wordCount.show()
+```
+
+---
+
+## ✅ Expected Output Example
+
+### Word Count Output
+
+```text id="pyout"
++-----+-----+
+|word |count|
++-----+-----+
+|spark|3    |
+|hello|1    |
+|big  |1    |
+|data |1    |
+|is   |1    |
+|fast |1    |
++-----+-----+
+```
+
+---
+
+Just tell me 👍
