@@ -1,0 +1,161 @@
+---
+
+# ✅ PRACTICAL 4: APACHE HIVE OPERATIONS
+
+### Technology: Hive SQL
+
+## 🎯 Objective
+
+Perform database operations like create, insert, query, update (overwrite), and delete using Hive.
+
+---
+
+## ⚙️ Steps to Perform
+
+1. Start Hadoop services
+
+```bash id="p1hadoop"
+start-all.cmd
+```
+
+---
+
+2. Open Hive
+
+```bash id="p1hive"
+hive
+```
+
+---
+
+## 🧾 Execution Commands
+
+### 1. Create Database & Use
+
+```sql id="h1"
+CREATE DATABASE user_db;
+USE user_db;
+```
+
+---
+
+### 2. Create Table
+
+```sql id="h2"
+CREATE TABLE users (
+  id INT,
+  name STRING,
+  age INT,
+  city STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+```
+
+---
+
+### 3. Show Tables
+
+```sql id="h3"
+SHOW TABLES;
+```
+
+---
+
+### 4. Insert Data
+
+```sql id="h4"
+INSERT INTO TABLE users VALUES (1, 'Divya', 25, 'Mumbai');
+INSERT INTO TABLE users VALUES (2, 'Amit', 30, 'Delhi');
+INSERT INTO TABLE users VALUES (3, 'Rahul', 28, 'Pune');
+```
+
+---
+
+### 5. Select Data
+
+```sql id="h5"
+SELECT * FROM users;
+```
+
+---
+
+### 6. Conditional Query
+
+```sql id="h6"
+SELECT name, city FROM users WHERE age > 25;
+```
+
+---
+
+### 7. Overwrite Data (Update Alternative)
+
+```sql id="h7"
+INSERT OVERWRITE TABLE users VALUES (1, 'Divya', 26, 'Pune');
+```
+
+---
+
+### 8. Rename Table
+
+```sql id="h8"
+ALTER TABLE users RENAME TO app_users;
+```
+
+---
+
+### 9. Add Column
+
+```sql id="h9"
+ALTER TABLE app_users ADD COLUMNS (email STRING);
+```
+
+---
+
+### 10. Describe Table
+
+```sql id="h10"
+DESCRIBE app_users;
+```
+
+---
+
+### 11. Truncate Table
+
+```sql id="h11"
+TRUNCATE TABLE app_users;
+```
+
+---
+
+### 12. Drop Table
+
+```sql id="h12"
+DROP TABLE app_users;
+```
+
+---
+
+### 13. Drop Database
+
+```sql id="h13"
+DROP DATABASE user_db CASCADE;
+```
+
+---
+
+## ✅ Expected Output Example
+
+```text id="hout"
++----+--------+-----+--------+
+| id | name   | age | city   |
++----+--------+-----+--------+
+| 1  | Divya  | 25  | Mumbai |
+| 2  | Amit   | 30  | Delhi  |
+| 3  | Rahul  | 28  | Pune   |
++----+--------+-----+--------+
+```
+
+---
+
+Say **"next"** and I’ll give you **PRACTICAL 5 (Sqoop)** in the same format 🚀
