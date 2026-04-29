@@ -1,0 +1,38 @@
+import string
+def clean_text(text):
+   
+    # Convert to lowercase
+    text = text.lower()
+    
+    # Remove punctuation
+    for p in string.punctuation:
+        text = text.replace(p, "")
+    return text
+    
+def word_count_analysis(text):
+    # Clean the text
+    cleaned_text = clean_text(text)
+    
+    # Split into words
+    words = cleaned_text.split()
+    
+    # Dictionary to store word frequency
+    freq = {}
+    
+    for word in words:
+        if word in freq:
+            freq[word] += 1
+        else:
+            freq[word] = 1
+    
+    return len(words), freq
+
+text = input("Enter text: ")
+
+total_words, frequency = word_count_analysis(text)
+print("\n===== WORD COUNT RESULT =====")
+print("Total Number of Words:", total_words)
+
+print("\nWord Frequency:")
+for word, count in frequency.items():
+    print(word, ":", count)
