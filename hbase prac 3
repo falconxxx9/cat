@@ -1,0 +1,56 @@
+✅ PRACTICAL 2: HBASE OPERATIONS
+Technology: HBase Shell
+🎯 Objective
+
+Perform basic CRUD operations (Create, Read, Update, Delete) in HBase.
+
+⚙️ Steps to Perform
+Start HBase
+start-hbase.cmd
+Open HBase Shell
+hbase shell
+
+🧾 Execution Commands
+1. Create Table
+create 'kccs', 'students'
+
+  2. List Tables
+list
+
+3. Describe Table
+describe 'kccs'
+
+  4. Insert Data (PUT)
+put 'kccs', '1', 'students:name', 'Dhruv'
+put 'kccs', '1', 'students:roll', '59'
+put 'kccs', '1', 'students:city', 'Mumbai'
+
+  5. Retrieve Data (GET)
+get 'kccs', '1'
+
+  6. Count Rows
+count 'kccs'
+
+  
+  7. Add Column Family (ALTER)
+alter 'kccs', NAME => 'teachers'
+
+  
+  8. Insert into New Column Family
+put 'kccs', '1', 'teachers:name', 'Mr. Naveen'
+
+  
+  9. Delete Data
+delete 'kccs', '1', 'students:roll'
+
+10. Disable & Enable Table
+disable 'kccs'
+enable 'kccs'
+
+  
+11. Truncate Table
+truncate 'kccs'
+✅ Expected Output Example
+ROW COLUMN+CELL
+1 column=students:name, value=Dhruv
+1 column=students:city, value=Mumbai
