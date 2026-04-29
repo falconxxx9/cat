@@ -115,3 +115,8 @@ world   1
 ---
 
 Say **"next"** and I’ll give you **PRACTICAL 2 (HBase)** in the same clean format.
+
+
+type.wordcount.txt|python mapper.py
+type.wordcount.txt|python mapper.py|sort|python reducer.py
+
