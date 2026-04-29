@@ -1,0 +1,149 @@
+---
+
+# ✅ PRACTICAL 3: APACHE PIG OPERATIONS
+
+### Technology: Apache Pig (Pig Latin)
+
+## 🎯 Objective
+
+Perform data loading, transformation, and analysis using Pig Latin.
+
+---
+
+## ⚙️ Steps to Perform
+
+1. Start Hadoop
+
+```bash
+start-all.cmd
+```
+
+---
+
+2. Open Command Prompt and run Pig in local mode
+
+```bash
+pig -x local
+```
+
+---
+
+3. Create required input files (example)
+
+```bash
+notepad data.txt
+notepad filter.txt
+notepad customers.txt
+notepad orders.txt
+```
+
+---
+
+## 🧾 Execution Commands
+
+### 1. LOAD & DUMP
+
+```pig
+A = load 'data.txt' as (lines);
+dump A;
+```
+
+---
+
+### 2. FILTER
+
+```pig
+b = load 'filter.txt' using PigStorage(',') as (a1:int,a2:int);
+result = filter b by a2 == 8;
+dump result;
+```
+
+---
+
+### 3. FOREACH
+
+```pig
+a = load 'foreach.txt' using PigStorage(',') as (a1:int,a2:int,a3:int);
+fe = foreach a generate a1, a2;
+dump fe;
+```
+
+---
+
+### 4. GROUP
+
+```pig
+A = load 'input.txt' using PigStorage(',') as (fname:chararray,lname:chararray,id:int);
+groupFname = group A by fname;
+dump groupFname;
+```
+
+---
+
+### 5. LIMIT
+
+```pig
+l = load 'limit.txt' using PigStorage(',') as (a1:int,a2:int,a3:int);
+result = limit l 2;
+dump result;
+```
+
+---
+
+### 6. ORDER BY
+
+```pig
+o = load 'order.txt' using PigStorage(',') as (a1:int,a2:int,a3:int);
+result = order o by a1 desc;
+dump result;
+```
+
+---
+
+### 7. DISTINCT
+
+```pig
+d = load 'distinct.txt' using PigStorage(',') as (a1:int,a2:int,a3:int);
+result = distinct d;
+dump result;
+```
+
+---
+
+### 8. JOIN (INNER JOIN)
+
+```pig
+a = load 'customers.txt' using PigStorage(',') as (id:int,name:chararray);
+b = load 'orders.txt' using PigStorage(',') as (oid:int,customer_id:int);
+c = join a by id, b by customer_id;
+dump c;
+```
+
+---
+
+## ✅ Sample Input (customers.txt)
+
+```
+1,Abuzar
+2,Amit
+```
+
+## ✅ Sample Input (orders.txt)
+
+```
+101,1
+102,2
+```
+
+---
+
+## ✅ Expected Output Example
+
+```
+(1,Abuzar,101,1)
+(2,Amit,102,2)
+```
+
+---
+
+Say **"next"** and I’ll give you **PRACTICAL 4 (Hive)** in the same format 🚀
