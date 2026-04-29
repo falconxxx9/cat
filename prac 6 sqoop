@@ -1,0 +1,149 @@
+---
+
+# ✅ PRACTICAL 5: SQOOP (DATA TRANSFER)
+
+### Technology: Sqoop + MySQL + Hadoop
+
+## 🎯 Objective
+
+Import data from MySQL to Hadoop (HDFS) and export data back to MySQL using Sqoop.
+
+---
+
+## ⚙️ Steps to Perform
+
+### 🔹 Part A: Prepare MySQL Data
+
+1. Open MySQL Workbench or CLI
+
+```sql id="s1"
+CREATE DATABASE my_sqoop_db;
+USE my_sqoop_db;
+```
+
+---
+
+2. Create Table
+
+```sql id="s2"
+CREATE TABLE employees (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  designation VARCHAR(50)
+);
+```
+
+---
+
+3. Insert Data
+
+```sql id="s3"
+INSERT INTO employees VALUES (1, 'Divya', 'Engineer');
+INSERT INTO employees VALUES (2, 'Amit', 'Analyst');
+```
+
+---
+
+## 🔹 Part B: Import Data (MySQL → HDFS)
+
+1. (Optional) Remove old HDFS folder
+
+```bash id="s4"
+hadoop fs -rm -r /user/hadoop/emp_data
+```
+
+---
+
+2. Run Sqoop Import
+
+```bash id="s5"
+sqoop import \
+--connect "jdbc:mysql://localhost:3306/my_sqoop_db" \
+--username root \
+--password your_password \
+--table employees \
+--target-dir /user/hadoop/emp_data \
+-m 1
+```
+
+---
+
+3. Verify Data in HDFS
+
+```bash id="s6"
+hadoop fs -ls /user/hadoop/emp_data
+```
+
+```bash id="s7"
+hadoop fs -cat /user/hadoop/emp_data/part-m-00000
+```
+
+---
+
+## 🔹 Part C: Export Data (HDFS → MySQL)
+
+1. Create Target Table in MySQL
+
+```sql id="s8"
+USE my_sqoop_db;
+
+CREATE TABLE employees_export (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  designation VARCHAR(50)
+);
+```
+
+---
+
+2. Run Sqoop Export
+
+```bash id="s9"
+sqoop export \
+--connect "jdbc:mysql://localhost:3306/my_sqoop_db" \
+--username root \
+--password your_password \
+--table employees_export \
+--export-dir /user/hadoop/emp_data \
+--input-fields-terminated-by "," \
+-m 1
+```
+
+---
+
+3. Verify Exported Data
+
+```sql id="s10"
+SELECT * FROM employees_export;
+```
+
+---
+
+## ⚠️ Common Fix (If Error Occurs)
+
+### Turn OFF Safe Mode
+
+```bash id="s11"
+hadoop dfsadmin -safemode leave
+```
+
+---
+
+### Clear Table (if duplicate error)
+
+```sql id="s12"
+TRUNCATE TABLE employees_export;
+```
+
+---
+
+## ✅ Expected Output Example
+
+```text id="sout"
+1,Divya,Engineer
+2,Amit,Analyst
+```
+
+---
+
+Say **"next"** and I’ll give you **PRACTICAL 6 (Apache Spark - Scala)** in the same format 🚀
